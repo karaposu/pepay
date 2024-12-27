@@ -1,1 +1,3 @@
 pepecoin
+fastapi
+indented_logger

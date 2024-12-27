@@ -31,21 +31,23 @@ import logging
 from fastapi import FastAPI
 from core.dependencies import setup_dependencies
 
-from apis.auth_api import router as AuthApiRouter
-from apis.data_api import router as DataApiRouter
-from apis.files_api import router as FilesApiRouter
-from apis.records_api import router as RecordsApiRouter
-from apis.reports_api import router as ReportsApiRouter
+from apis.default_api import router as router
 
-from apis.budget_api import router as BudgetApiRouter
-from apis.business_api import router as BusinessApiRouter
-from apis.exchange_api import router as ExchangeApiRouter
-from apis.family_api import router as FamilyApiRouter
+# from apis.auth_api import router as AuthApiRouter
+# from apis.data_api import router as DataApiRouter
+# from apis.files_api import router as FilesApiRouter
+# from apis.records_api import router as RecordsApiRouter
+# from apis.reports_api import router as ReportsApiRouter
 
-from apis.system_api import router as SystemApiRouter
-from apis.user_api import router as UserApiRouter
+# from apis.budget_api import router as BudgetApiRouter
+# from apis.business_api import router as BusinessApiRouter
+# from apis.exchange_api import router as ExchangeApiRouter
+# from apis.family_api import router as FamilyApiRouter
 
-from apis.dependencies_api import router as DependenciesApiRouter
+# from apis.system_api import router as SystemApiRouter
+# from apis.user_api import router as UserApiRouter
+
+# from apis.dependencies_api import router as DependenciesApiRouter
 
 from starlette.middleware.base import BaseHTTPMiddleware
 import uuid
@@ -57,14 +59,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 
-
-
-logging.getLogger("pdfplumber").setLevel(logging.WARNING)
-logging.getLogger("pdfminer").setLevel(logging.WARNING)
-logging.getLogger("fitz").setLevel(logging.WARNING)  # If usi
-
 app = FastAPI(
-    title="Budgety.ai API",
+    title="Pepay.net API",
     description="API for processing bank statement PDFs and creating reports",
     version="1.0.0",
 )
@@ -109,22 +105,25 @@ app.add_middleware(
 
 app.add_middleware(RequestIDMiddleware)
 
-app.include_router(AuthApiRouter)
-app.include_router(DataApiRouter)
-app.include_router(FilesApiRouter)
-app.include_router(RecordsApiRouter)
-app.include_router(ReportsApiRouter)
+# app.include_router(AuthApiRouter)
 
-app.include_router(BusinessApiRouter)
-app.include_router(ExchangeApiRouter)
-app.include_router(FamilyApiRouter)
 
-app.include_router(SystemApiRouter)
-app.include_router(UserApiRouter)
+app.include_router(router)
+# app.include_router(DataApiRouter)
+# app.include_router(FilesApiRouter)
+# app.include_router(RecordsApiRouter)
+# app.include_router(ReportsApiRouter)
 
-app.include_router(BudgetApiRouter)
+# app.include_router(BusinessApiRouter)
+# app.include_router(ExchangeApiRouter)
+# app.include_router(FamilyApiRouter)
 
-app.include_router(DependenciesApiRouter)
+# app.include_router(SystemApiRouter)
+# app.include_router(UserApiRouter)
+
+# app.include_router(BudgetApiRouter)
+
+# app.include_router(DependenciesApiRouter)
 
 services = setup_dependencies()
 
