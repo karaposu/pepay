@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Pepay Web App API
+  version: 1.0.0
+  description: API for purchasing PepeCoin using USDT.
+servers:
+  - url: https://api.pepeapp.com
+    description: Production Server
+  - url: https://staging.api.pepeapp.com
+    description: Staging Server
+paths:
+  /exchange-rate:
+    get:
+      summary: Get Exchange Rate
+      description: Retrieves the latest exchange rate of USDT to PepeCoin.
+      responses:
+        200:
+          description: Successful response with exchange rate.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rate:
+                    type: number
+                    description: Exchange rate of USDT to PepeCoin.
+  /generate-address:
+    post:
+      summary: Generate Payment Address
+      description: Generates a new USDT wallet address for a transaction.
+      responses:
+        200:
+          description: Successful response with payment address.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: Generated USDT wallet address.
+  /purchase:
+    post:
+      summary: Initiate Purchase
+      description: Initiates a purchase of PepeCoin.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pepeCoinAddress:
+                  type: string
+                  description: User's PepeCoin wallet address.
+                amount:
+                  type: integer
+                  description: Amount of PepeCoin to purchase.
+                user_email:
+                  type: string
+                  description: User's email address.
+      responses:
+        200:
+          description: Successful initiation of purchase.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usdtAmount:
+                    type: number
+                    description: Amount of USDT required.
+                  paymentAddress:
+                    type: string
+                    description: Wallet address to send USDT.
+  /confirm-payment:
+    post:
+      summary: Confirm Payment
+      description: Confirms that the user has sent USDT and triggers payment validation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactionId:
+                  type: string
+                  description: Transaction ID of the USDT payment.
+                pepeCoinAddress:
+                  type: string
+                  description: User's PepeCoin wallet address.
+      responses:
+        200:
+          description: Payment confirmation received.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: Unique identifier for the request.
+  /payment-status:
+    get:
+      summary: Check Payment Status
+      description: Returns the status of the user’s payment.
+      parameters:
+        - name: transactionId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Transaction ID of the payment.
+      responses:
+        200:
+          description: Payment status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the payment (e.g., pending, completed, failed).
+  /feedback:
+    post:
+      summary: Feedback/Support
+      description: Allows users to report issues or provide feedback.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: User's email (optional).
+                message:
+                  type: string
+                  description: Feedback or issue message.
+      responses:
+        200:
+          description: Feedback received successfully.
+  /admin:
+    get:
+      summary: Admin Endpoint
+      description: Admin-only endpoint for monitoring and managing transactions and rates.
+      responses:
+        200:
+          description: Admin data retrieved successfully.
+
