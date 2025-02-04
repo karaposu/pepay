@@ -18,7 +18,7 @@ Base = declarative_base()
 
 class TransferBuilder(Base):
     __tablename__ = "transferbuilder"
-
+    
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, nullable=False)
     request_id = Column(String(255), nullable=False)
@@ -28,25 +28,29 @@ class TransferBuilder(Base):
     fe_incall_time = Column(DateTime, nullable=True)
 
     # Buy-related columns
-    requested_buy_amount_in_pepe = Column(Float, nullable=False)
-    prefered_payment_asset = Column(String(50), nullable=True)
-    how_much_should_be_paid = Column(Float, nullable=False)
+
+    give = Column(String(50), nullable=True)
+    take = Column(String(50), nullable=True)
+    give_amount = Column(Float, nullable=True)
+    take_amount = Column(Float, nullable=True)
+    latest_take_amount_calculation_time = Column(String(50), nullable=True)
 
     # Info columns
     email = Column(String(255), nullable=True)
     telegram = Column(String(255), nullable=True)
+    customer_ip = Column(String(50), nullable=True)
 
-    # Price / snapshot columns
-    pepe_price_in_usdt = Column(Float, nullable=True)
-    pepe_price_snapshot_time = Column(DateTime, nullable=True)
 
     # Timeout
     timeout_time = Column(DateTime, nullable=True)
+    timeout_time_in_fe = Column(String(50), nullable=True)
 
     # USDT deposit address generation
-    generated_usdt_address = Column(String(255), nullable=True)
-    generated_usdt_address_fe_incall_time = Column(DateTime, nullable=True)
-
+    #todo change name 
+   
+    generated_take_address = Column(String(255), nullable=True)
+    take_name = Column(String(255), nullable=True)
+    
     # Payment confirmation
     payment_done_clicked = Column(Boolean, default=False)
     payment_done_clicked_fe_time = Column(DateTime, nullable=True)

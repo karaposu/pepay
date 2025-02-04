@@ -4,13 +4,23 @@ info:
   version: 1.0.0
   description: API for purchasing PepeCoin using USDT.
 servers:
-  - url: https://api.pepeapp.com
+  - url: https://api.pepay.net
     description: Production Server
-  - url: https://staging.api.pepeapp.com
+  - url: https://staging.api.pepay.net
     description: Staging Server
     
+
+
+    # we need a new endpoint to show the graph of the community user growth. 
+    # get /community/graph which will get the data
+    # returned data should be contain  
+    # list of [date, telegram size, discord size, reddit size]
     
 paths:
+
+   
+
+  
   /buy-pepecoin/order:
     post:
       tags:
@@ -24,10 +34,7 @@ paths:
             schema:
               type: object
               properties:
-                # user_id:
-                #   type: integer
-                #   description: Unique identifier of the user if available
-                  # example: 123
+               
                 fe_incall_time:
                   type: string
                   format: date-time

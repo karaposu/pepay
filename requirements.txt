@@ -1,3 +1,5 @@
 pepecoin
 fastapi
 indented_logger
+sqlalchemy
+dependency_injector
