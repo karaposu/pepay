@@ -97,9 +97,7 @@ class RequestHandler:
     def check_metadata_validity(self, meta_data):
         return True
 
-
     
-
     def generate_usdt_deposit_address(self, user_id):
 
         class MyRequest:

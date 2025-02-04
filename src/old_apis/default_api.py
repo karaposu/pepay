@@ -4,8 +4,22 @@ from typing import Dict, List  # noqa: F401
 import importlib
 import pkgutil
 
-# from apis.default_api_base import BaseDefaultApi
+from apis.default_api_base import BaseDefaultApi
 import impl
+
+import logging
+logger = logging.getLogger(__name__)
+logging.getLogger("multipart").setLevel(logging.WARNING)
+logging.getLogger("multipart.multipart").setLevel(logging.WARNING)
+
+from security_api import get_token_bearerAuth
+
+from fastapi import FastAPI, Request, HTTPException
+from fastapi import BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, Form, Security
+from typing import Dict, List  # noqa: F401
+import importlib
+import pkgutil
 
 from fastapi import (  # noqa: F401
     APIRouter,
@@ -21,6 +35,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
+
+def get_request_handler():
+    from app import app
+    from impl.request_handler import RequestHandler
+    return RequestHandler(app)
+
+def get_request_id(request: Request):
+    # Retrieve the request_id from request.state
+    return request.state.request_id
+
+
 
 from models.extra_models import TokenModel  # noqa: F401
 from pydantic import Field, StrictStr
@@ -125,9 +150,20 @@ async def feedback_post(
 async def generate_address_post(
 ) -> GenerateAddressPost200Response:
     """Generates a new USDT wallet address for a transaction."""
-    if not BaseDefaultApi.subclasses:
-        raise HTTPException(status_code=500, detail="Not implemented")
-    return await BaseDefaultApi.subclasses[0]().generate_address_post()
+    try:
+        user_id = token_bearerAuth.sub
+        # logger.debug(f"{request_id=}" )
+        # # logger.debug(f"token_bearerAuth {token_bearerAuth}", )
+        # logger.debug(f"{user_id=}", )
+        # logger.debug(f"{offset=}" )
+        # logger.debug(f"{bank_name=}" )
+
+        rh = get_request_handler()
+        return rh.generate_usdt_deposit_address(user_id)
+
+    except Exception as e:
+        logger.error(f"Error processing file: {str(e)}", exc_info=True)  # Log the exception details
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 @router.get(
