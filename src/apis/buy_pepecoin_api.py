@@ -1,8 +1,14 @@
 # coding: utf-8
 
+import logging
+logger = logging.getLogger(__name__)
+logging.getLogger("multipart").setLevel(logging.WARNING)
+logging.getLogger("multipart.multipart").setLevel(logging.WARNING)
+
 from typing import Dict, List  # noqa: F401
 import importlib
 import pkgutil
+from security_api import get_token_bearerAuth
 
 # from apis.buy_pepecoin_api_base import BaseBuyPepecoinApi
 import impl
@@ -34,6 +40,19 @@ from models.buy_pepecoin_order_hash_get200_response import BuyPepecoinOrderHashG
 from models.buy_pepecoin_order_post200_response import BuyPepecoinOrderPost200Response
 from models.buy_pepecoin_order_post_request import BuyPepecoinOrderPostRequest
 
+
+from typing import Optional, Annotated
+from pydantic import Field, StrictStr
+from fastapi import Depends, Request
+
+def get_request_handler():
+    from app import app
+    from impl.request_handler import RequestHandler
+    return RequestHandler(app)
+
+def get_request_id(request: Request):
+    # Retrieve the request_id from request.state
+    return request.state.request_id
 
 router = APIRouter()
 
@@ -133,8 +152,20 @@ async def buy_pepecoin_order_hash_get(
 )
 async def buy_pepecoin_order_post(
     buy_pepecoin_order_post_request: BuyPepecoinOrderPostRequest = Body(None, description=""),
+    token_bearerAuth: TokenModel = Security( get_token_bearerAuth ),
+    request_id: str = Depends(get_request_id)  
 ) -> BuyPepecoinOrderPost200Response:
     """Creates a new buy request for PepeCoin. Returns the USDT deposit address, the current Pepe price in USDT, and a request ID."""
-    if not BaseBuyPepecoinApi.subclasses:
-        raise HTTPException(status_code=500, detail="Not implemented")
-    return await BaseBuyPepecoinApi.subclasses[0]().buy_pepecoin_order_post(buy_pepecoin_order_post_request)
+    try:
+        user_id = token_bearerAuth.sub
+        logger.debug(f"{request_id=}" )
+       
+        logger.debug(f"{buy_pepecoin_order_post_request=}", )
+      
+       
+        rh = get_request_handler()
+        return rh.handle_buy_pepecoin_order_post(user_id, buy_pepecoin_order_post_request)
+
+    except Exception as e:
+        logger.error(f"Error processing file: {str(e)}", exc_info=True)  # Log the exception details
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

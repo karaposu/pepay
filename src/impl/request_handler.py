@@ -132,6 +132,16 @@ class RequestHandler:
 
 
     
+    
+    def handle_buy_pepecoin_order_post(self, user_id, buy_pepecoin_order_post_request ):
+
+        
+        from impl.services.buy_pepecoin.ordering_service import BuyPepecoinOrderingService
+        self.logger.debug("handle_buy_pepecoin_order_post ", extra={'lvl': 3})
+
+        dependency = self.app.state.services
+        p = BuyPepecoinOrderingService(user_id, buy_pepecoin_order_post_request, dependencies=dependency)
+        return p.response
 
  
 

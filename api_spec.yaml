@@ -8,7 +8,359 @@ servers:
     description: Production Server
   - url: https://staging.api.pepeapp.com
     description: Staging Server
+    
+    
 paths:
+  /buy-pepecoin/order:
+    post:
+      tags:
+        - buy_pepecoin
+      summary: order a buy request for pepecoin
+      description: Creates a new buy request for PepeCoin. Returns the USDT deposit address, the current Pepe price in USDT, and an order_hash.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                # user_id:
+                #   type: integer
+                #   description: Unique identifier of the user if available
+                  # example: 123
+                fe_incall_time:
+                  type: string
+                  format: date-time
+                  description: Timestamp of the button press in the frontend
+                  example: "2025-01-17T12:00:00Z"
+                give:
+                  type: string
+                  description: Give currency code. All currency codes you can get through /buy_pepecoin/currencies/ method
+                give_amount:
+                  type: number
+                  format: float
+                  description: The amount you must pay. Specify take_amount or give_amount.
+                  example: 1000000
+                take:
+                  type: string
+                  description: pep, since we only sell pep in pepay
+                take_amount:
+                  type: number
+                  format: float
+                  description: The pep amount you will receive
+                  example: 1000000
+                
+                  
+                rate_shown_in_fe:
+                  type: number
+                  format: float
+                  description: The snapshot price of Pepe shown in fe
+                  example: 0.000001
+                rate_shown_in_fe_time:
+                  type: string
+                  format: date-time
+                  description: When the Pepe price was taken
+                  example: "2025-01-17T12:00:00Z"
+
+                email:
+                  type: string
+                  format: email
+                  description: The user’s email address
+                  example: "user@example.com"
+               
+                telegram:
+                  type: string
+                  description: The user’s Telegram handle
+                  example: "@pepebuyer"
+                  
+                customer_ip:
+                  type: string
+                  description: pep, since we only sell pep in pepay
+                  
+                timeout_time_in_fe:
+                  type: string
+                  format: date-time
+                  description: When the buy request times out on the frontend
+                  example: "2025-01-17T12:05:00Z"
+                  
+              # required:
+              #   - requested_buy_amount_in_pepe
+              #   - how_much_should_be_paid
+              #   - pepe_price_in_usdt
+      responses:
+        '200':
+          description: Successful initiation of buy request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_address:
+                    type: string
+                    description: Unique deposit address for selected currency
+                    example: "Txyz123456789abcdef"
+                  payment_currency:
+                    type: string
+                    example: "usdt"
+                  payment_protocol:
+                    type: string
+                    example: "trc20"
+                  fixed_rate:
+                    type: number
+                    format: float
+                    description: Snapshot price of Pepe in USDT
+                    example: 0.000001
+                  fixed_take_amount:
+                    type: number
+                    format: float
+                    description: Snapshot price of Pepe in USDT
+                    example: 0.000001
+                
+                  order_hash:
+                    type: string
+                    description: Unique identifier for the new buy request
+                    example: "req_abc123"
+
+  /buy-pepecoin/order/confirm_manual:
+    post:
+      tags:
+        - buy_pepecoin
+      summary: Confirm the user’s payment for the PepeCoin buy request
+      description: Called when the user has submitted the payment in the frontend.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_hash:
+                  type: string
+                  description: The request ID for the buy order
+                  example: "req_abc123"
+              
+                payment_done_clicked_fe_time:
+                  type: string
+                  format: date-time
+                  description: Timestamp of when the user clicked “Payment Done”
+                  example: "2025-01-17T12:01:30Z"
+              required:
+                - order_hash
+         
+      responses:
+        '200':
+          description: waiting for the payment. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: waiting for the payment
+                    example: "Payment confirmed. Your PepeCoin will be sent soon."
+                    
+                    
+  /buy-pepecoin/{order_hash}:
+    get:
+      tags:
+        - buy_pepecoin
+      summary: Get details of a specific buy request
+      description: Retrieve the information and current status of a particular PepeCoin buy request.
+      parameters:
+        - name: order_hash
+          in: path
+          required: true
+          description: Unique identifier of the buy request
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the buy request data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  # request_id:
+                  #   type: string
+                  #   example: "req_abc123"
+                  status:
+                    type: string
+                    description: Current status of the buy request (e.g., pending, confirmed, canceled)
+                    example: "pending"
+                  user_id:
+                    type: integer
+                    example: 123
+                    
+                    
+                  give:
+                    type: string
+                    description: Give currency code. All currency codes you can get through /buy_pepecoin/currencies/ method
+                  give_amount:
+                    type: number
+                    format: float
+                    description: The amount you must pay. Specify take_amount or give_amount.
+                    example: 1000000
+                  take:
+                    type: string
+                    description: pep, since we only sell pep in pepay
+                  take_amount:
+                    type: number
+                    format: float
+                    description: The pep amount you will receive
+                    example: 1000000
+                  payment_address:
+                    type: string
+                    description: Unique deposit address for selected currency
+                    example: "Txyz123456789abcdef"
+                  payment_currency:
+                    type: string
+                    example: "usdt"
+                  payment_protocol:
+                    type: string
+                    example: "trc20"
+                  fixed_rate:
+                    type: number
+                    format: float
+                    description: Snapshot price of Pepe in USDT
+                    example: 0.000001
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2025-01-17T12:00:00Z"
+                    
+                    
+        '404':
+          description: Buy request not found
+          
+          
+
+  /buy-pepecoin/{order_hash}/cancel:
+    post:
+      tags:
+        - buy_pepecoin
+      summary: Cancel a buy request
+      description: Cancels an existing buy request if it hasn’t been paid or processed yet.
+      parameters:
+        - name: order_hash
+          in: path
+          required: true
+          description: The unique identifier of the buy request
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully canceled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    example: "req_abc123"
+                  status:
+                    type: string
+                    example: "canceled"
+        '400':
+          description: Unable to cancel (e.g., if already paid or completed)
+        '404':
+          description: Buy request not found
+          
+          
+
+  /buy-pepecoin/dispute:
+    post:
+      tags:
+        - buy_pepecoin
+      summary: File a dispute for a transaction
+      description: Allows the user to dispute an issue with their transaction by providing details and optional evidence (e.g., screenshot).
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                date_period:
+                  type: string
+                  description: The date (or date range) the user made the transfer
+                  example: "2025-01-17"
+                amount_sent:
+                  type: number
+                  format: float
+                  description: How much USDT the user actually sent
+                  example: 50.0
+                error_screenshot:
+                  type: string
+                  format: binary
+                  description: Screenshot or image file showing the error encountered
+                contact_email:
+                  type: string
+                  format: email
+                  description: Email address to reach the user
+                  example: "dispute_user@example.com"
+                contact_phone:
+                  type: string
+                  description: Phone number to reach the user
+                  example: "+1-234-567-890"
+                contact_telegram:
+                  type: string
+                  description: Telegram handle to reach the user
+                  example: "@disputeUser"
+      responses:
+        '200':
+          description: Dispute has been filed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dispute_number:
+                    type: string
+                    description: Unique identifier for the dispute
+                    example: "DPT-12345"
+                  dispute_status:
+                    type: string
+                    description: Current status of the dispute (e.g., "open", "pending review", "resolved")
+                    example: "open"
+                  mod_message:
+                    type: string
+                    description: A message or note from the moderator/administrator
+                    example: "We’ve received your dispute and will review within 24 hours."
+
+
+
+
+  /price/pepecoin_to_usdt:
+    get:
+      tags:
+        - price_info
+      summary: Get the current PepeCoin-to-USDT price
+      description: Returns the real-time (or latest) price of PepeCoin in USDT.
+      responses:
+        '200':
+          description: Returns the price in USDT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pepe_price_in_usdt:
+                    type: number
+                    format: float
+                    example: 0.000001                  
+
+
+
+
+
+
+
+
+
+
   /exchange-rate:
     get:
       summary: Get Exchange Rate
