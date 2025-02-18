@@ -33,7 +33,7 @@ from core.dependencies import setup_dependencies
 
 from apis.default_api import router as router
 
-# from apis.auth_api import router as AuthApiRouter
+from apis.community_api import router as CommunityApiRouter
 # from apis.data_api import router as DataApiRouter
 # from apis.files_api import router as FilesApiRouter
 # from apis.records_api import router as RecordsApiRouter
@@ -109,7 +109,7 @@ app.add_middleware(RequestIDMiddleware)
 
 
 app.include_router(router)
-# app.include_router(DataApiRouter)
+app.include_router(CommunityApiRouter)
 # app.include_router(FilesApiRouter)
 # app.include_router(RecordsApiRouter)
 # app.include_router(ReportsApiRouter)

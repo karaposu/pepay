@@ -3,3 +3,7 @@ fastapi
 indented_logger
 sqlalchemy
 dependency_injector
+passlib
+werkzeug
+pandas
+uvicorn

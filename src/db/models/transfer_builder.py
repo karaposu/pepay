@@ -16,6 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+#todo change table name to buypepecointransferbuilder
 class TransferBuilder(Base):
     __tablename__ = "transferbuilder"
     

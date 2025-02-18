@@ -130,7 +130,16 @@ class RequestHandler:
    
     
 
+    def handle_get_community_size(self):
 
+        
+        from impl.services.get_size_service import GetCommunitySize
+       
+        dependency = self.app.state.services
+        p = GetCommunitySize( dependencies=dependency)
+        return p.response
+
+ 
     
     
     def handle_buy_pepecoin_order_post(self, user_id, buy_pepecoin_order_post_request ):
@@ -196,52 +205,52 @@ class RequestHandler:
         p= VerifyService(mr)
         return p.response
 
-    def handle_upload_file(self,pdf_file,extension, user_id ,bank_id,  country_code, process_as_test, use_auto_extractor) -> UploadAndProcessPdf200Response:
+    # def handle_upload_file(self,pdf_file,extension, user_id ,bank_id,  country_code, process_as_test, use_auto_extractor) -> UploadAndProcessPdf200Response:
 
-        class MyRequest :
-            def __init__(self):
-                self.pdf_file=pdf_file
-                self.user_id = user_id
+    #     class MyRequest :
+    #         def __init__(self):
+    #             self.pdf_file=pdf_file
+    #             self.user_id = user_id
 
-                self.bank_id = bank_id
-                self.extension = extension
-                self.country_code=country_code
-                self.process_as_test = process_as_test
-                self.use_auto_extractor = use_auto_extractor
+    #             self.bank_id = bank_id
+    #             self.extension = extension
+    #             self.country_code=country_code
+    #             self.process_as_test = process_as_test
+    #             self.use_auto_extractor = use_auto_extractor
 
-        from impl.services.file.upload_file_service import UploadFileService
+    #     from impl.services.file.upload_file_service import UploadFileService
 
-        dependency = self.app.state.services
+    #     dependency = self.app.state.services
 
-        mr=MyRequest()
-        p =UploadFileService(mr,dependency )
+    #     mr=MyRequest()
+    #     p =UploadFileService(mr,dependency )
 
-        return p.response
+    #     return p.response
 
-    def handle_upload_file_background(self,pdf_file,extension, user_id ,bank_id,  country_code, process_as_test,bank_name, use_auto_extractor, background_tasks) -> UploadAndProcessPdf200Response:
+    # def handle_upload_file_background(self,pdf_file,extension, user_id ,bank_id,  country_code, process_as_test,bank_name, use_auto_extractor, background_tasks) -> UploadAndProcessPdf200Response:
 
-        class MyRequest :
-            def __init__(self):
-                self.pdf_file=pdf_file
-                self.user_id = user_id
+    #     class MyRequest :
+    #         def __init__(self):
+    #             self.pdf_file=pdf_file
+    #             self.user_id = user_id
 
-                self.bank_id = bank_id
-                self.extension = extension
-                self.country_code=country_code
-                self.process_as_test = process_as_test
-                self.bank_name = bank_name
-                self.use_auto_extractor = use_auto_extractor
-                self.background_tasks = background_tasks
-
-
+    #             self.bank_id = bank_id
+    #             self.extension = extension
+    #             self.country_code=country_code
+    #             self.process_as_test = process_as_test
+    #             self.bank_name = bank_name
+    #             self.use_auto_extractor = use_auto_extractor
+    #             self.background_tasks = background_tasks
 
 
-        from impl.services.file.upload_file_service_background import UploadFileBackgroundService
 
-        dependency = self.app.state.services
 
-        mr=MyRequest()
-        p =UploadFileBackgroundService(mr,dependency )
+    #     from impl.services.file.upload_file_service_background import UploadFileBackgroundService
 
-        return p.response
+    #     dependency = self.app.state.services
+
+    #     mr=MyRequest()
+    #     p =UploadFileBackgroundService(mr,dependency )
+
+    #     return p.response
 

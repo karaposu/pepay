@@ -1,4 +1,4 @@
-# create_budget_db.py
+# create_pepay_db.py
 
 
 #  python -m db.scripts.create_budget_db
@@ -9,7 +9,7 @@ import os
 def main():
     # Create the SQLite engine (you can change the URI as needed)
     base_dir = os.path.dirname(__file__)
-    main_db_path = os.path.join(base_dir, "..",  "data", "budget_tracker.db")
+    main_db_path = os.path.join(base_dir, "..",  "data", "pepay.db")
 
     main_db_path = os.path.abspath(main_db_path)
 

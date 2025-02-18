@@ -10,13 +10,41 @@ servers:
     description: Staging Server
     
 
-
-    # we need a new endpoint to show the graph of the community user growth. 
-    # get /community/graph which will get the data
-    # returned data should be contain  
-    # list of [date, telegram size, discord size, reddit size]
-    
 paths:
+
+  
+  /community/graph:
+    get:
+      tags:
+        - community
+      summary: Get community user growth graph data
+      description: Returns a list of community growth data over time.
+      responses:
+        '200':
+          description: Successful retrieval of community growth data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                      example: "2025-01-17"
+                    telegram_size:
+                      type: integer
+                      example: 5000
+                    discord_size:
+                      type: integer
+                      example: 3000
+                    reddit_size:
+                      type: integer
+                      example: 2000
+                    twitter_size:
+                      type: integer
+                      example: 2000
 
    
 

@@ -4,12 +4,12 @@ import yaml
 import re
 logger = logging.getLogger(__name__)
 
-def create_banks_data_db_session(dependencies):
+def create_pepay_db_session(dependencies):
 
-    banks_db_session_factory = dependencies.bank_info_session_factory
-    banks_db_session_maker = banks_db_session_factory()
-    banks_db_session = banks_db_session_maker()
-    return banks_db_session
+    pepay_db_session_factory = dependencies.pepay_db_session_factory
+    pepay_db_session_maker = pepay_db_session_factory()
+    pepay_db_session = pepay_db_session_maker()
+    return pepay_db_session
 
 def create_budget_db_session(dependencies):
 

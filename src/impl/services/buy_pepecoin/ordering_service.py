@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from traceback import format_exc
 
 
-from impl.utils import create_banks_data_db_session
+from impl.utils import  create_pepay_db_session
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,8 @@ class BuyPepecoinOrderingService:
 
             logger.debug(f"supported: {supported}")
             logger.debug(f"country: {country}")
-
-            session=create_banks_data_db_session(self.dependencies)
+            
+            session= create_pepay_db_session(self.dependencies)
             bank_information_repository_provider = self.dependencies.bank_information_repository
             #
             # Access session_factory and bank_information_repository from dependencies
