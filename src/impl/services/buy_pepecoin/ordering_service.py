@@ -15,15 +15,15 @@ class BuyPepecoinOrderingService:
         self.user_id = user_id
         self.dependencies = dependencies
         self.response = None
-
+        
         logger.debug("Inside BuyPepecoinOrderingService")
-
+        
         self.preprocess_request_data()
         self.process_request()
-
+        
     def preprocess_request_data(self):
         logger.debug("Inside preprocess_request_data")
-
+        
         try:
             # Extract parameters from request
             supported = self.request.supported
@@ -33,28 +33,17 @@ class BuyPepecoinOrderingService:
             logger.debug(f"country: {country}")
             
             session= create_pepay_db_session(self.dependencies)
-            bank_information_repository_provider = self.dependencies.bank_information_repository
-            #
-            # Access session_factory and bank_information_repository from dependencies
-            # logger.debug("Accessing session_factory and bank_information_repository from dependencies")
-            # session_factory = self.dependencies.bank_info_session_factory  # Should be a Singleton provider
-            # bank_information_repository_provider = self.dependencies.bank_information_repository
-
-            # # Correctly obtain the sessionmaker and session instances
-            # sessionmaker_instance = session_factory()  # This gives us the sessionmaker
-            # session = sessionmaker_instance()  # This gives us the session
-
-
-
+            buypepecoin_repository_provider = self.dependencies.buypepecoin_repository_provider
+            
             try:
                 logger.debug("Now inside the database session")
-
+                
                 # Instantiate the BankInformationRepository with the session
-                bank_information_repository = bank_information_repository_provider(session=session)
+                buypepecoin_repository = buypepecoin_repository_provider(session=session)
                 logger.debug("bank_information_repository created")
 
                 # Generate the bank information using the BankInformationRepository
-                banks = bank_information_repository.get_bank_information(
+                banks = buypepecoin_repository.save_initial_request_to_transfer_builder(
                     country=country,
                     supported=supported
                 )

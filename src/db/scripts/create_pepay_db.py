@@ -1,26 +1,22 @@
-# create_budget_db.py
+# create_pepay_db.py
 
 
-
-#  python -m db.scripts.create_banks_db
-
-
+#  python -m db.scripts.create_pepay_db
 
 from sqlalchemy import create_engine
-# from db.models import Base  # This imports all models via models/__init__.py
-from db.models.bank_db_models import Base  # This imports all models via models/__init__.py
+from db.models import Base  # This imports all models via models/__init__.py
 import os
 
 def main():
     # Create the SQLite engine (you can change the URI as needed)
     base_dir = os.path.dirname(__file__)
-    main_db_path = os.path.join(base_dir, "..",  "data", "banks_data.db")
+    main_db_path = os.path.join(base_dir, "..",  "data", "pepay.db")
 
     main_db_path = os.path.abspath(main_db_path)
 
     # Create database URLs
     main_db_url = f"sqlite:///{main_db_path}"
-
+    
     engine = create_engine(main_db_url, echo=True)
 
     # Create all tables in the database

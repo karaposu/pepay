@@ -14,7 +14,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+# Base = declarative_base()
+
+from .base import Base, get_current_time
 
 #todo change table name to buypepecointransferbuilder
 class TransferBuilder(Base):

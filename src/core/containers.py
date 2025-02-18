@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 from db.session import get_engine
 import yaml
 
-# from db.repositories.bank_information_repository import BankInformationRepository
+from db.repositories.buypepecoin_repository import BuypepecoinRepository
 # from db.repositories.report_repository import ReportRepository
 
 # from utils.currency_utils import load_currency_configs
@@ -42,19 +42,17 @@ class Services(containers.DeclarativeContainer):
         echo=False
     )
 
-    # Bank Info Session factory provider
+    # community db Session factory provider
     community_db_session_factory = providers.Singleton(
         sessionmaker,
         bind=community_db_engine
     )
 
 
-
-
-    # bank_information_repository = providers.Factory(
-    #     BankInformationRepository,
-    #     session=providers.Dependency()
-    # )
+    buypepecoin_repository_provider = providers.Factory(
+        BuypepecoinRepository,
+        session=providers.Dependency()
+    )
 
 
 
