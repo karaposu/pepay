@@ -1,5 +1,7 @@
 # coding: utf-8
 
+# this is apis/buy_pepecoin_api.py
+
 import logging
 logger = logging.getLogger(__name__)
 logging.getLogger("multipart").setLevel(logging.WARNING)

@@ -1,7 +1,6 @@
 """
-transfer_builder.py
+this is db/models/transfer_builder.py
 
-SQLAlchemy model definition for the 'transferbuilder' table.
 """
 
 from sqlalchemy import (
