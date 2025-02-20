@@ -83,7 +83,7 @@ class BuypepecoinRepository:
             self.session.add(new_transfer)
             self.session.commit()
             self.session.refresh(new_transfer)
-
+     
             logger.debug(
                 f"Created new TransferBuilder row with id={new_transfer.id}, request_id={request_id}"
             )
