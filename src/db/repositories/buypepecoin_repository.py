@@ -55,10 +55,9 @@ class BuypepecoinRepository:
             new_transfer = TransferBuilder(
                 user_id=user_id,
                 request_id=request_id,
-                
                 be_incall_time=datetime.utcnow(),  # or None, or keep as is
                 fe_incall_time=buy_pepecoin_order_post_request.fe_incall_time,
-
+                
                 give=buy_pepecoin_order_post_request.give,
                 take=buy_pepecoin_order_post_request.take,
                 give_amount=buy_pepecoin_order_post_request.give_amount,
@@ -69,16 +68,14 @@ class BuypepecoinRepository:
                 email=buy_pepecoin_order_post_request.email,
                 telegram=buy_pepecoin_order_post_request.telegram,
                 customer_ip=buy_pepecoin_order_post_request.customer_ip,
-
                 timeout_time=buy_pepecoin_order_post_request.timeout_time_in_fe,
                 timeout_time_in_fe=timeout_str,
-
-     
-                usdt_address =usdt_public_address
-                hex_private_key= hex_private_key
-                generated_take_address= usdt_address
+                
+                
+                hex_private_key= hex_private_key,
+                generated_take_address= usdt_public_address
             )
-
+            
             # Save to DB
             self.session.add(new_transfer)
             self.session.commit()
@@ -97,9 +94,9 @@ class BuypepecoinRepository:
                 fixed_take_amount=new_transfer.take_amount,
                 order_hash=request_id
             )
-
+            
             return response
-
+        
         except Exception as e:
             logger.error(f"Error saving TransferBuilder: {e}", exc_info=True)
             self.session.rollback()

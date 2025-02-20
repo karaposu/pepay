@@ -10,7 +10,7 @@ logging.getLogger("multipart.multipart").setLevel(logging.WARNING)
 from typing import Dict, List  # noqa: F401
 import importlib
 import pkgutil
-from security_api import get_token_bearerAuth
+# from security_api import get_token_bearerAuth
 
 # from apis.buy_pepecoin_api_base import BaseBuyPepecoinApi
 import impl
@@ -154,12 +154,13 @@ async def buy_pepecoin_order_hash_get(
 )
 async def buy_pepecoin_order_post(
     buy_pepecoin_order_post_request: BuyPepecoinOrderPostRequest = Body(None, description=""),
-    token_bearerAuth: TokenModel = Security( get_token_bearerAuth ),
+   # token_bearerAuth: TokenModel = Security( get_token_bearerAuth ),
     request_id: str = Depends(get_request_id)  
 ) -> BuyPepecoinOrderPost200Response:
     """Creates a new buy request for PepeCoin. Returns the USDT deposit address, the current Pepe price in USDT, and a request ID."""
     try:
-        user_id = token_bearerAuth.sub
+       # user_id = token_bearerAuth.sub
+        user_id = -1
         logger.debug(f"{request_id=}" )
        
         logger.debug(f"{buy_pepecoin_order_post_request=}", )

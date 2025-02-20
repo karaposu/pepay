@@ -34,20 +34,8 @@ from core.dependencies import setup_dependencies
 from apis.default_api import router as router
 
 from apis.community_api import router as CommunityApiRouter
-# from apis.data_api import router as DataApiRouter
-# from apis.files_api import router as FilesApiRouter
-# from apis.records_api import router as RecordsApiRouter
-# from apis.reports_api import router as ReportsApiRouter
+from apis.buy_pepecoin_api import router as BuypepecoinApiRouter
 
-# from apis.budget_api import router as BudgetApiRouter
-# from apis.business_api import router as BusinessApiRouter
-# from apis.exchange_api import router as ExchangeApiRouter
-# from apis.family_api import router as FamilyApiRouter
-
-# from apis.system_api import router as SystemApiRouter
-# from apis.user_api import router as UserApiRouter
-
-# from apis.dependencies_api import router as DependenciesApiRouter
 
 from starlette.middleware.base import BaseHTTPMiddleware
 import uuid
@@ -110,7 +98,7 @@ app.add_middleware(RequestIDMiddleware)
 
 app.include_router(router)
 app.include_router(CommunityApiRouter)
-# app.include_router(FilesApiRouter)
+app.include_router(BuypepecoinApiRouter)
 # app.include_router(RecordsApiRouter)
 # app.include_router(ReportsApiRouter)
 
